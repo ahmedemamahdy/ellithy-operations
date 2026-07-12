@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ellithy Operations Flow</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #2B3990;
+  --navy-dark: #1E2A6E;
+  --accent: #F5A623;
+  --accent-light: #FEF3C7;
+  --green: #10B981;
+  --green-light: #D1FAE5;
+  --red: #EF4444;
+  --red-light: #FEE2E2;
+  --blue: #3B82F6;
+  --blue-light: #DBEAFE;
+  --purple: #8B5CF6;
+  --purple-light: #EDE9FE;
+  --cyan: #06B6D4;
+  --bg: #F1F5F9;
+  --card: #FFFFFF;
+  --text: #1E293B;
+  --muted: #64748B;
+  --border: #E2E8F0;
+  --font-en: 'Inter', system-ui, sans-serif;
+  --font-ar: 'Cairo', system-ui, sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: var(--font-en);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+body.rtl { direction: rtl; font-family: var(--font-ar); }
+
+/* ── HEADER ─────────────────────── */
+.header {
+  background: var(--navy);
+  color: white;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.header-brand .logo {
+  width: 40px; height: 40px;
+  background: var(--accent);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 18px; color: var(--navy);
+}
+.header-brand h1 { font-size: 1.1rem; font-weight: 700; }
+.header-brand span { font-size: 0.75rem; opacity: 0.7; display: block; margin-top: -2px; }
+
+.lang-toggle {
+  display: flex;
+  background: rgba(255,255,255,0.15);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.lang-toggle button {
+  border: none; background: none; color: white;
+  padding: 8px 16px; font-size: 0.85rem; cursor: pointer;
+  font-family: inherit; font-weight: 600;
+  transition: all 0.3s;
+}
+.lang-toggle button.active {
+  background: var(--accent);
+  color: var(--navy);
+}
+
+/* ── TABS ─────────────────────── */
+.tabs {
+  background: white;
+  display: flex;
+  gap: 0;
+  padding: 0 1rem;
+  border-bottom: 2px solid var(--border);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.tabs button {
+  border: none; background: none;
+  padding: 14px 20px;
+  font-size: 0.9rem; font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.3s;
+  font-family: inherit;
+}
+.tabs button:hover { color: var(--navy); }
+.tabs button.active {
+  color: var(--navy);
+  border-bottom-color: var(--accent);
+}
+
+/* ── CONTENT ─────────────────────── */
+.content { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+.section { display: none; animation: fadeIn 0.4s ease; }
+.section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── OVERVIEW ─────────────────────── */
+.hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+  border-radius: 16px;
+  padding: 2.5rem;
+  color: white;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: '';
+  position: absolute; right: -40px; top: -40px;
+  width: 200px; height: 200px;
+  background: var(--accent);
+  border-radius: 50%;
+  opacity: 0.08;
+}
+.hero h2 { font-size: 2rem; margin-bottom: 0.5rem; }
+.hero p { opacity: 0.8; font-size: 1rem; max-width: 600px; line-height: 1.6; }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.25rem;
+  text-align: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border: 1px solid var(--border);
+  transition: transform 0.2s;
+}
+.stat-card:hover { transform: translateY(-2px); }
+.stat-card .num {
+  font-size: 2rem; font-weight: 800;
+  color: var(--navy);
+  line-height: 1;
+}
+.stat-card .label {
+  font-size: 0.8rem; color: var(--muted);
+  margin-top: 4px;
+}
+
+.biz-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+.biz-card {
+  background: white;
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border-left: 5px solid var(--accent);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+body.rtl .biz-card { border-left: none; border-right: 5px solid var(--accent); }
+.biz-card:nth-child(2) { border-left-color: var(--green); }
+.biz-card:nth-child(3) { border-left-color: var(--blue); }
+body.rtl .biz-card:nth-child(2) { border-right-color: var(--green); }
+body.rtl .biz-card:nth-child(3) { border-right-color: var(--blue); }
+.biz-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+.biz-card .biz-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin-bottom: 12px;
+}
+.biz-card h3 { font-size: 1.1rem; margin-bottom: 6px; color: var(--navy); }
+.biz-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+
+/* ── FLOW DIAGRAMS ─────────────────────── */
+.flow-title {
+  font-size: 1.5rem; font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.5rem;
+}
+.flow-subtitle {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+.flow-container {
+  position: relative;
+  padding: 1rem 0;
+}
+.flow-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+.flow-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  position: relative;
+  padding-bottom: 1.5rem;
+  cursor: pointer;
+  animation: slideIn 0.5s ease both;
+}
+.flow-step:nth-child(1) { animation-delay: 0.05s; }
+.flow-step:nth-child(2) { animation-delay: 0.1s; }
+.flow-step:nth-child(3) { animation-delay: 0.15s; }
+.flow-step:nth-child(4) { animation-delay: 0.2s; }
+.flow-step:nth-child(5) { animation-delay: 0.25s; }
+.flow-step:nth-child(6) { animation-delay: 0.3s; }
+.flow-step:nth-child(7) { animation-delay: 0.35s; }
+.flow-step:nth-child(8) { animation-delay: 0.4s; }
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+body.rtl .flow-step { animation-name: slideInRTL; }
+@keyframes slideInRTL {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.flow-step .step-line {
+  position: absolute;
+  width: 3px;
+  background: var(--border);
+  top: 40px; bottom: 0;
+  left: 19px;
+}
+body.rtl .flow-step .step-line { left: auto; right: 19px; }
+.flow-step:last-child .step-line { display: none; }
+
+.flow-step .step-dot {
+  min-width: 40px; height: 40px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.85rem;
+  color: white;
+  z-index: 2;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+.flow-step:hover .step-dot { transform: scale(1.15); }
+.flow-step .step-content {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  flex: 1;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+}
+.flow-step:hover .step-content {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  border-color: var(--accent);
+}
+.flow-step .step-content h4 {
+  font-size: 0.95rem; color: var(--navy);
+  margin-bottom: 4px;
+}
+.flow-step .step-content p {
+  font-size: 0.82rem; color: var(--muted);
+  line-height: 1.5;
+}
+.flow-step .step-content .step-detail {
+  display: none;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--border);
+  font-size: 0.8rem;
+  color: var(--text);
+  line-height: 1.6;
+}
+.flow-step.expanded .step-content .step-detail { display: block; }
+.flow-step .step-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+/* ── PARALLEL FLOWS ─────────────────────── */
+.parallel-section {
+  margin-top: 2rem;
+  background: white;
+  border-radius: 14px;
+  padding: 1.5rem;
+  border: 2px dashed var(--accent);
+}
+.parallel-section h3 {
+  font-size: 1rem;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.parallel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+.parallel-card {
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.parallel-card:hover { background: var(--accent-light); }
+.parallel-card h4 { font-size: 0.9rem; color: var(--navy); margin-bottom: 4px; }
+.parallel-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+/* ── TEAM SECTION ─────────────────────── */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+.team-card {
+  background: white;
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border-top: 4px solid var(--navy);
+}
+.team-card.inspector { border-top-color: var(--green); }
+.team-card.equipment { border-top-color: var(--purple); }
+.team-card h3 {
+  font-size: 1.05rem; color: var(--navy);
+  margin-bottom: 0.75rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.team-card ul {
+  list-style: none;
+  padding: 0;
+}
+.team-card ul li {
+  padding: 6px 0;
+  font-size: 0.85rem;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+  line-height: 1.4;
+}
+.team-card ul li:last-child { border-bottom: none; }
+.team-card ul li .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+/* ── BRANCH MAP ─────────────────────── */
+.branch-visual {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.branch-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.25rem;
+  text-align: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+}
+.branch-card:hover {
+  border-color: var(--navy);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+.branch-card .branch-icon {
+  width: 56px; height: 56px;
+  background: var(--bg);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 10px;
+  font-size: 24px;
+}
+.branch-card h4 { font-size: 0.95rem; color: var(--navy); margin-bottom: 8px; }
+.branch-card .branch-items {
+  font-size: 0.78rem; color: var(--muted);
+  line-height: 1.8;
+}
+.branch-card .branch-items span {
+  display: block;
+}
+
+/* ── RESPONSIVE ─────────────────────── */
+@media (max-width: 768px) {
+  .header { padding: 0 1rem; }
+  .header-brand h1 { font-size: 0.9rem; }
+  .content { padding: 1rem; }
+  .hero { padding: 1.5rem; }
+  .hero h2 { font-size: 1.4rem; }
+  .tabs { padding: 0 0.5rem; }
+  .tabs button { padding: 12px 14px; font-size: 0.8rem; }
+  .flow-step { gap: 0.75rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-brand">
+    <div class="logo">DY</div>
+    <div>
+      <h1 data-en="Driveyalla by Ellithy — Operations" data-ar="درايف يلا من الليثي — العمليات"></h1>
+      <span data-en="Operational Workflow & Team Structure" data-ar="سير العمل التشغيلي وهيكل الفريق"></span>
+    </div>
+  </div>
+  <div class="lang-toggle">
+    <button class="active" onclick="setLang('en')">EN</button>
+    <button onclick="setLang('ar')">عربي</button>
+  </div>
+</div>
+
+<div class="tabs" id="tabs">
+  <button class="active" data-tab="overview" data-en="Overview" data-ar="نظرة عامة"></button>
+  <button data-tab="classifieds" data-en="Classifieds" data-ar="إعلانات مبوبة"></button>
+  <button data-tab="inspection" data-en="Car Inspection" data-ar="فحص السيارات"></button>
+  <button data-tab="newcars" data-en="New Cars" data-ar="سيارات جديدة"></button>
+  <button data-tab="team" data-en="Team & Equipment" data-ar="الفريق والمعدات"></button>
+</div>
+
+<div class="content">
+
+  <!-- ═══════ OVERVIEW ═══════ -->
+  <div class="section active" id="sec-overview">
+    <div class="hero">
+      <h2 data-en="3 Business Lines, 1 Unified Operation" data-ar="٣ خطوط أعمال، عملية تشغيلية موحدة"></h2>
+      <p data-en="The website operates 3 distinct business modules — Classifieds, Car Inspection, and New Cars — managed by a lean central operations team of 2 members, supported by 4 branch-based inspectors."
+         data-ar="يدير الموقع ٣ وحدات أعمال مختلفة — إعلانات مبوبة، فحص سيارات، وسيارات جديدة — يديرها فريق عمليات مركزي من شخصين، مدعوم بـ ٤ فاحصين في الفروع."></p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card"><div class="num">6</div><div class="label" data-en="Team Members" data-ar="أعضاء الفريق"></div></div>
+      <div class="stat-card"><div class="num">4</div><div class="label" data-en="Branches" data-ar="فروع"></div></div>
+      <div class="stat-card"><div class="num">2</div><div class="label" data-en="Inspection Cars" data-ar="سيارات فحص"></div></div>
+      <div class="stat-card"><div class="num">4</div><div class="label" data-en="Tablets" data-ar="أجهزة لوحية"></div></div>
+      <div class="stat-card"><div class="num">4</div><div class="label" data-en="Interactive Screens" data-ar="شاشات تفاعلية"></div></div>
+      <div class="stat-card"><div class="num">3</div><div class="label" data-en="Business Lines" data-ar="خطوط أعمال"></div></div>
+    </div>
+
+    <div class="biz-cards">
+      <div class="biz-card" onclick="switchTab('classifieds')">
+        <div class="biz-icon" style="background:var(--accent-light);color:var(--accent);">&#128663;</div>
+        <h3 data-en="Classifieds" data-ar="إعلانات مبوبة"></h3>
+        <p data-en="Users list their used cars for FREE. Operations team moderates listings, verifies car data, and proactively recruits listings from competing platforms."
+           data-ar="المستخدمون يعرضون سياراتهم المستعملة مجاناً. فريق العمليات يراجع الإعلانات، يتحقق من بيانات السيارة، ويستقطب إعلانات من المنصات المنافسة."></p>
+      </div>
+      <div class="biz-card" onclick="switchTab('inspection')">
+        <div class="biz-icon" style="background:var(--green-light);color:var(--green);">&#128269;</div>
+        <h3 data-en="Car Inspection" data-ar="فحص السيارات"></h3>
+        <p data-en="Professional mobile inspection service. 4 inspectors across branches, 2 rotating cars. Users book online, get inspected at home or in-branch."
+           data-ar="خدمة فحص سيارات متنقلة احترافية. ٤ فاحصين في الفروع، سيارتين متنقلتين. المستخدم يحجز أونلاين ويُفحص في المنزل أو الفرع."></p>
+      </div>
+      <div class="biz-card" onclick="switchTab('newcars')">
+        <div class="biz-icon" style="background:var(--blue-light);color:var(--blue);">&#127942;</div>
+        <h3 data-en="New Cars" data-ar="سيارات جديدة"></h3>
+        <p data-en="Digital showroom with official & market prices updated daily. Interactive screens in each branch. Leads routed to Ellithy sales team every 2 hours."
+           data-ar="صالة عرض رقمية بأسعار رسمية وأسعار السوق محدثة يومياً. شاشات تفاعلية في كل فرع. العملاء المحتملون يُرسلون لفريق مبيعات الليثي كل ساعتين."></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ CLASSIFIEDS ═══════ -->
+  <div class="section" id="sec-classifieds">
+    <h2 class="flow-title" data-en="Classifieds — Operational Flow" data-ar="إعلانات مبوبة — سير العمل التشغيلي"></h2>
+    <p class="flow-subtitle" data-en="Free used car listings. The operations team ensures quality, completeness, and proactively grows the marketplace."
+       data-ar="إعلانات سيارات مستعملة مجانية. فريق العمليات يضمن الجودة والاكتمال ويعمل على تنمية السوق بشكل استباقي."></p>
+
+    <div class="flow-container">
+      <div class="flow-steps">
+
+        <div class="flow-step" onclick="this.classList.toggle('expanded')">
+          <div class="step-line"></div>
+          <div class="step-dot" style="background:var(--accent);">1</div>
+          <div class="step-content">
+            <h4 data-en="User Submits Car Listing" data-ar="المستخدم يرسل إعلان سيارة"></h4>
+            <p data-en="User fills in car details, uploads photos, and submits the listing on the website — completely free." data-ar="المستخدم يملأ بيانات السيارة، يرفع الصور، ويرسل الإعلان على الموقع — مجاناً بالكامل."></p>
+            <div class="step-detail" data-en="The listing form captures: make, model, year, mileage, price, photos, contact info, and condition description." data-ar="نموذج الإعلان يتضمن: الماركة، الموديل، السنة، الكيلومترات، السعر، الصور، بيانات التواصل، ووصف الحالة."></div>
+          </div>
+        </div>
+
+        <div class="flow-step" onclick="this.classList.toggle('expanded')">
+          <div class="step-line"></div>
+          <div class="step-dot" style="background:var(--navy);">2</div>
+          <div class="step-content">
+            <h4 data-en="Ops Checks Car Model in Database" data-ar="العمليات تتحقق من موديل السيارة في قاعدة البيانات"></h4>
+            <p data-en="Before reviewing the listing, the ops team checks if the car brand and model exist in the website database." data-ar="قبل مراجعة الإعلان، يتحقق فريق العمليات من وجود ماركة وموديل السيارة في قاعدة بيانات الموقع."></p>
+            <div class="step-detail" data-en="If the model doesn't exist, the ops member adds it to the database with full specs before proceeding. This keeps the catalog complete for future listings." data-ar="إذا لم يكن الموديل موجوداً، يضيفه عضو فريق العمليات لقاعدة البيانات بالمواصفات الكاملة. هذا يحافظ على اكتمال الكتالوج للإعلانات المستقبلية."></div>
+            <span class="step-badge" style="background:var(--blue-light);color:var(--blue);" data-en="If missing → Add to DB" data-ar="إذا غير موجود ← يُضاف لقاعدة البيانات"></span>
+          </div>
+        </div>
+
+        <div class="flow-step" onclick="this.classList.toggle('expanded')">
+          <div class="step-line"></div>
+          <div class="step-dot" style="background:var(--navy);">3</div>
+          <div class="step-content">
+            <h4 data-en="Review Listing Quality" data-ar="مراجعة جودة الإعلان"></h4>
+            <p data-en="Ops reviews photos, description, and pricing against platform guidelines." data-ar="العمليات تراجع الصور والوصف والسعر وفقاً لإرشادات المنصة."></p>
+            <div class="step-detail" data-en="Guidelines include: clear photos (min 4), accurate description, reasonable pricing, no inappropriate content, and complete contact info." data-ar="الإرشادات تشمل: صور واضحة (٤ على الأقل)، وصف دقيق، سعر معقول، لا محتوى غير لائق، وبيانات تواصل كاملة."></div>
+          </div>
+        </div>
+
+        <div class="flow-step" onclick="this.classList.toggle('expanded')">
+          <div class="step-line"></div>
+          <div class="step-dot" style="background:var(--green);">&#10003;</div>
+          <div class="step-content">
+            <h4 data-en="Meets Guidelines → Publish" data-ar="يطابق الإرشادات ← نشر"></h4>
+            <p data-en="If the listing meets all guidelines, it gets published immediately on the website." data-ar="إذا طابق الإعلان جميع الإرشادات، يُنشر فوراً على الموقع."></p>
+          </div>
+        </div>
+
+        <div class="flow-step" onclick="this.classList.toggle('expanded')">
+          <div class="step-line"></div>
+          <div class="step-dot" style="background:var(--red);">!</div>
+          <div class="step-content">
+            <h4 data-en="Doesn't Meet Guidelines → Comment" data-ar="لا يطابق الإرشادات ← تعليق"></h4>
+            <p data-en="Ops leaves a comment for the user explaining what needs to be fixed." data-ar="العمليات تترك تعليقاً للمستخدم توضح ما يجب تعديله."></p>
+            <div class="step-detail" data-en="The user receives a notification to edit their listing. If they edit and resubmit, it gets published. If they don't respond, the listing is not posted." data-ar="المستخدم يتلقى إشعاراً لتعديل إعلانه. إذا عدّل وأعاد الإرسال، يُنشر. إذا لم يستجب، لا يُنشر الإعلان."></div>
+            <span class="step-badge" style="background:var(--green-light);color:var(--green);" data-en="User edits → Publish" data-ar="المستخدم يعدل ← نشر"></span>
+            <span class="step-badge" style="background:var(--red-light);color:var(--red);" data-en="No response → Not posted" data-ar="لا استجابة ← لا يُنشر"></span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="parallel-section">
+      <h3>&#9889; <span data-en="Proactive Growth Activities (Parallel)" data-ar="أنشطة نمو استباقية (متوازية)"></span></h3>
+      <div class="parallel-grid">
+        <div class="parallel-card" onclick="this.classList.toggle('expanded')">
+          <h4 data-en="Cold-Call Competing Platforms" data-ar="الاتصال بأصحاب السيارات على المنصات المنافسة"></h4>
+          <p data-en="Ops calls car owners listing on OLX, Dubizzle, Facebook Marketplace and offers them a free listing on Ellithy's platform — highlighting the Ellithy brand reach and trust."
+             data-ar="العمليات تتصل بأصحاب السيارات المعلنين على OLX وFacebook Marketplace وتعرض عليهم إعلان مجاني على منصة الليثي — مع إبراز قوة وثقة علامة الليثي."></p>
+        </div>
+        <div class="parallel-card" onclick="this.classList.toggle('expanded')">
+          <h4 data-en="Hunt Best Deals → WhatsApp Group" data-ar="اصطياد أفضل الصفقات ← مجموعة واتساب"></h4>
+          <p data-en="Ops identifies the best deals across platforms and sends them to an internal WhatsApp group with Ellithy's used car team. If the team wants to buy the car, they contact the owner directly."
+             data-ar="العمليات تحدد أفضل الصفقات عبر المنصات وترسلها لمجموعة واتساب داخلية مع فريق سيارات الليثي المستعملة. إذا أراد الفريق شراء السيارة، يتواصلون مع المالك مباشرة."></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ INSPECTION ═══════ -->
+  <div class="section" id="sec-inspection">
+    <h2 class="flow-title" data-en="Car Inspection — Operational Flow" data-ar="فحص السيارات — سير العمل التشغيلي"></h2>
+    <p class="flow-subtitle" data-en="Professional mobile inspection with 4 inspectors and 2 rotating cars across all branches. Users book online, inspected at home or in-branch."
+       data-ar="فحص احترافي متنقل مع ٤ فاحصين وسيارتين متنقلتين عبر جميع الفروع. المستخدم يحجز أونلاين ويُفحص في المنزل أو الفرع."></p>
+
+    <div class="flow-container">
+      <div class="flow-steps">
+
+        <div class="flow-step" onclick="this.classList.toggle('expanded')">
+          <div class="step-line"></div>
+          <div class="step-dot" style="background:var(--green);">1</div>
+          <div class="step-content">
+            <h4 data-en="User Books Inspection on Website" data-ar="المستخدم يحجز فحص على الموقع"></h4>
+            <p data-en="User selects inspection type, preferred date/time, and location (home address or nearest branch)." data-ar="المستخدم يختار نوع الفحص، التاريخ/الوقت المفضل، والموقع (عنوان المنزل أو أقرب فرع)."></p>
+          </div>
+        </div>
+
+        <div class="flow-step" onclick="this.classList.toggle('expanded')">
+          <div class="step-line"></div>
+          <div class="step-dot" style="background:var(--navy);">2</div>
+          <div class="step-content">
+            <h4 data-en="Ops Receives Order in Admin Panel" data-ar="العمليات تستقبل الطلب من لوحة التحكم"></h4>
+            <p data-en="The order appears in the website admin panel with all customer and car details." data-ar="الطلب يظهر في لوحة تحكم الموقع مع جميع بيانات العميل والسيارة."></p>
+          </div>
+        </div>
+
+        <div class="flow-step" onclick="this.classList.toggle('expanded')">
+          <div class="step-line"></div>
+          <div class="step-dot" style="background:var(--navy);">3</div>
+          <div class="step-content">
+            <h4 data-en="Call Customer to Confirm" data-ar="الاتصال بالعميل للتأكيد"></h4>
+            <p data-en="Ops calls the customer to confirm the visit — verify the location (home or branch), date, time, and car details." data-ar="العمليات تتصل بالعميل لتأكيد الزيارة — التحقق من الموقع (منزل أو فرع)، التاريخ، الوقت، وبيانات السيارة."></p>
+            <div class="step-detail" data-en="During the call, ops confirms whether the customer prefers a home visit or to bring the car to the nearest branch. Home visits require car dispatch coordination." data-ar="أثناء المكالمة، العمليات تؤكد إذا كان العميل يفضل زيارة منزلية أو إحضار السيارة لأقرب فرع. الزيارات المنزلية تتطلب تنسيق إرسال السيارة."></div>
+          </div>
+        </div>
+
+        <div class="flow-step" onclick="this.classList.toggle('expanded')">
+          <div class="step-line"></div>
+          <div class="step-dot" style="background:var(--accent);">4</div>
+          <div class="step-content">
+            <h4 data-en="Coordinate Inspector & Car" data-ar="تنسيق الفاحص والسيارة"></h4>
+            <p data-en="Ops coordinates with the nearest branch inspector and assigns one of the 2 rotating inspection cars if it's a home visit." data-ar="العمليات تنسق مع فاحص أقرب فرع وتخصص واحدة من سيارتي الفحص المتنقلتين إذا كانت زيارة منزلية."></p>
+            <div class="step-detail" data-en="The 2 inspection cars rotate across 4 branches based on the next scheduled visit. Branch visits don't need a car — the customer brings their vehicle to the branch." data-ar="سيارتا الفحص تتنقلان بين ٤ فروع حسب الزيارة التالية المجدولة. زيارات الفرع لا تحتاج سيارة — العميل يحضر سيارته للفرع."></div>
+            <span class="step-badge" style="background:var(--blue-light);color:var(--blue);" data-en="2 cars rotate across 4 branches" data-ar="سيارتان تتنقلان بين ٤ فروع"></span>
+          </div>
+        </div>
+
+        <div class="flow-step" onclick="this.classList.toggle('expanded')">
+          <div class="step-line"></div>
+          <div class="step-dot" style="background:var(--green);">5</div>
+          <div class="step-content">
+            <h4 data-en="Inspection Conducted" data-ar="إجراء الفحص"></h4>
+            <p data-en="Inspector performs the full inspection checklist — mechanical, body, electrical, interior — and generates a detailed report." data-ar="الفاحص ينفذ قائمة الفحص الكاملة — ميكانيكي، هيكل، كهربائي، داخلي — وينشئ تقرير مفصل."></p>
+          </div>
+        </div>
+
+        <div class="flow-step" onclick="this.classList.toggle('expanded')">
+          <div class="step-line"></div>
+          <div class="step-dot" style="background:var(--navy);">6</div>
+          <div class="step-content">
+            <h4 data-en="Feedback & CRM Update" data-ar="التقييم وتحديث نظام إدارة العملاء"></h4>
+            <p data-en="After the visit, ops gathers customer feedback and updates the CRM with visit outcome, report status, and follow-up actions." data-ar="بعد الزيارة، العمليات تجمع تقييم العميل وتحدث نظام إدارة العملاء بنتيجة الزيارة وحالة التقرير وإجراءات المتابعة."></p>
+          </div>
+        </div>
+
+        <div class="flow-step" onclick="this.classList.toggle('expanded')">
+          <div class="step-line"></div>
+          <div class="step-dot" style="background:var(--accent);">7</div>
+          <div class="step-content">
+            <h4 data-en="Purchase Opportunity" data-ar="فرصة شراء"></h4>
+            <p data-en="If the inspected car is a good deal, the used car team is notified — potential acquisition for Ellithy's used car inventory." data-ar="إذا كانت السيارة المفحوصة صفقة جيدة، يُبلَّغ فريق السيارات المستعملة — فرصة استحواذ لمخزون الليثي للسيارات المستعملة."></p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ NEW CARS ═══════ -->
+  <div class="section" id="sec-newcars">
+    <h2 class="flow-title" data-en="New Cars — Operational Flow" data-ar="سيارات جديدة — سير العمل التشغيلي"></h2>
+    <p class="flow-subtitle" data-en="Digital showroom with daily-updated prices. Leads generated from the website are pushed to CRM every 2 hours for the Ellithy sales team."
+       data-ar="صالة عرض رقمية بأسعار محدثة يومياً. العملاء المحتملون من الموقع يُرسلون لنظام إدارة العملاء كل ساعتين لفريق مبيعات الليثي."></p>
+
+    <div class="parallel-section" style="border-color:var(--blue); margin-bottom: 2rem; margin-top: 0;">
+      <h3 style="color:var(--blue);">&#128197; <span data-en="Phase 1: First 2 Months — Data Entry" data-ar="المرحلة ١: أول شهرين — إدخال البيانات"></span></h3>
+      <p style="font-size:0.85rem; color:var(--muted); line-height:1.6;" data-en="The main workload for the 2 ops members in months 1-2 is entering all car data: models, specifications, official prices, market prices, available colors, and available tiers for each car."
+         data-ar="العبء الرئيسي لعضوي فريق العمليات في الشهرين الأولين هو إدخال جميع بيانات السيارات: الموديلات، المواصفات، الأسعار الرسمية، أسعار السوق، الألوان المتاحة، والفئات المتاحة لكل سيارة."></p>
+    </div>
+
+    <div class="flow-container">
+      <div class="flow-steps">
+
+        <div class="flow-step" onclick="this.classList.toggle('expanded')">
+          <div class="step-line"></div>
+          <div class="step-dot" style="background:var(--blue);">1</div>
+          <div class="step-content">
+            <h4 data-en="Daily Price Updates" data-ar="تحديث الأسعار يومياً"></h4>
+            <p data-en="Every day, ops updates both the official price and market price for each car model on the website." data-ar="كل يوم، العمليات تحدث السعر الرسمي وسعر السوق لكل موديل سيارة على الموقع."></p>
+            <div class="step-detail" data-en="Market prices are tracked from competing dealers, online marketplaces, and industry sources. Official prices come from manufacturer price lists." data-ar="أسعار السوق تُتابع من التجار المنافسين والأسواق الإلكترونية ومصادر الصناعة. الأسعار الرسمية من قوائم أسعار الشركات المصنعة."></div>
+            <span class="step-badge" style="background:var(--accent-light);color:var(--accent);" data-en="Official + Market prices" data-ar="أسعار رسمية + أسعار السوق"></span>
+          </div>
+        </div>
+
+        <div class="flow-step" onclick="this.classList.toggle('expanded')">
+          <div class="step-line"></div>
+          <div class="step-dot" style="background:var(--blue);">2</div>
+          <div class="step-content">
+            <h4 data-en="Branch Displays Show Live Data" data-ar="شاشات الفروع تعرض البيانات مباشرة"></h4>
+            <p data-en="Each of the 4 branches has 1 tablet and 1 interactive screen showing real-time car data, prices, and availability." data-ar="كل فرع من الفروع الـ ٤ لديه جهاز لوحي وشاشة تفاعلية تعرض بيانات السيارات والأسعار والتوفر بشكل لحظي."></p>
+            <div class="step-detail" data-en="Customers in the branch can browse the full catalog, compare models, see exact pricing (official vs. market), and check color/tier availability — all on the interactive screen." data-ar="العملاء في الفرع يمكنهم تصفح الكتالوج الكامل، مقارنة الموديلات، رؤية الأسعار الدقيقة (رسمي مقابل السوق)، والتحقق من توفر الألوان/الفئات — كل ذلك على الشاشة التفاعلية."></div>
+            <span class="step-badge" style="background:var(--purple-light);color:var(--purple);" data-en="1 Tablet + 1 Screen per branch" data-ar="جهاز لوحي + شاشة لكل فرع"></span>
+          </div>
+        </div>
+
+        <div class="flow-step" onclick="this.classList.toggle('expanded')">
+          <div class="step-line"></div>
+          <div class="step-dot" style="background:var(--green);">3</div>
+          <div class="step-content">
+            <h4 data-en="User Submits Lead on Website" data-ar="المستخدم يرسل طلب على الموقع"></h4>
+            <p data-en="User browses new cars, selects a model, and submits a lead request — choosing their preferred branch." data-ar="المستخدم يتصفح السيارات الجديدة، يختار موديل، ويرسل طلب — مع اختيار الفرع المفضل."></p>
+          </div>
+        </div>
+
+        <div class="flow-step" onclick="this.classList.toggle('expanded')">
+          <div class="step-line"></div>
+          <div class="step-dot" style="background:var(--navy);">4</div>
+          <div class="step-content">
+            <h4 data-en="Leads Gathered Every 2 Hours" data-ar="جمع العملاء المحتملين كل ساعتين"></h4>
+            <p data-en="All new car leads are collected from the admin panel every 2 hours and pushed to the CRM, tagged by the branch the customer requested." data-ar="جميع طلبات السيارات الجديدة تُجمع من لوحة التحكم كل ساعتين وتُرسل لنظام إدارة العملاء، مصنفة حسب الفرع الذي طلبه العميل."></p>
+          </div>
+        </div>
+
+        <div class="flow-step" onclick="this.classList.toggle('expanded')">
+          <div class="step-line"></div>
+          <div class="step-dot" style="background:var(--accent);">5</div>
+          <div class="step-content">
+            <h4 data-en="Ellithy Sales Team Follows Up" data-ar="فريق مبيعات الليثي يتابع"></h4>
+            <p data-en="The existing Ellithy sales team at each branch receives the leads and handles customer follow-up, test drives, and closing." data-ar="فريق مبيعات الليثي الحالي في كل فرع يستلم الطلبات ويتولى متابعة العميل وتجربة القيادة وإغلاق الصفقة."></p>
+            <span class="step-badge" style="background:var(--green-light);color:var(--green);" data-en="Existing Ellithy sales team" data-ar="فريق مبيعات الليثي الحالي"></span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ TEAM ═══════ -->
+  <div class="section" id="sec-team">
+    <h2 class="flow-title" data-en="Team Structure & Equipment" data-ar="هيكل الفريق والمعدات"></h2>
+    <p class="flow-subtitle" data-en="6 dedicated team members + existing Ellithy sales force across 4 branches."
+       data-ar="٦ أعضاء فريق مخصصين + فريق مبيعات الليثي الحالي عبر ٤ فروع."></p>
+
+    <div class="team-grid">
+      <div class="team-card">
+        <h3>&#128187; <span data-en="Central Ops Team (2 Members)" data-ar="فريق العمليات المركزي (شخصان)"></span></h3>
+        <ul>
+          <li><div class="dot"></div><span data-en="Review & moderate classifieds listings" data-ar="مراجعة وإدارة إعلانات السيارات المبوبة"></span></li>
+          <li><div class="dot"></div><span data-en="Add missing car models to database" data-ar="إضافة موديلات السيارات الناقصة لقاعدة البيانات"></span></li>
+          <li><div class="dot"></div><span data-en="Cold-call owners on competing platforms" data-ar="الاتصال بأصحاب السيارات على المنصات المنافسة"></span></li>
+          <li><div class="dot"></div><span data-en="Hunt deals → WhatsApp to used car team" data-ar="اصطياد الصفقات ← واتساب لفريق السيارات المستعملة"></span></li>
+          <li><div class="dot"></div><span data-en="Receive & coordinate inspection bookings" data-ar="استقبال وتنسيق حجوزات الفحص"></span></li>
+          <li><div class="dot"></div><span data-en="Call customers to confirm inspection visits" data-ar="الاتصال بالعملاء لتأكيد زيارات الفحص"></span></li>
+          <li><div class="dot"></div><span data-en="Coordinate inspectors & car assignments" data-ar="تنسيق الفاحصين وتوزيع السيارات"></span></li>
+          <li><div class="dot"></div><span data-en="Gather post-visit feedback in CRM" data-ar="جمع تقييمات ما بعد الزيارة في نظام إدارة العملاء"></span></li>
+          <li><div class="dot"></div><span data-en="Enter & update new car data daily" data-ar="إدخال وتحديث بيانات السيارات الجديدة يومياً"></span></li>
+          <li><div class="dot"></div><span data-en="Push leads to CRM every 2 hours" data-ar="إرسال العملاء المحتملين لنظام إدارة العملاء كل ساعتين"></span></li>
+        </ul>
+      </div>
+
+      <div class="team-card inspector">
+        <h3>&#128270; <span data-en="Branch Inspectors (4 Members)" data-ar="فاحصو الفروع (٤ أعضاء)"></span></h3>
+        <ul>
+          <li><div class="dot" style="background:var(--green);"></div><span data-en="1 inspector per branch (4 branches total)" data-ar="فاحص واحد لكل فرع (٤ فروع إجمالاً)"></span></li>
+          <li><div class="dot" style="background:var(--green);"></div><span data-en="Conduct full inspection checklist" data-ar="تنفيذ قائمة الفحص الكاملة"></span></li>
+          <li><div class="dot" style="background:var(--green);"></div><span data-en="Home visits with rotating inspection car" data-ar="زيارات منزلية بسيارة الفحص المتنقلة"></span></li>
+          <li><div class="dot" style="background:var(--green);"></div><span data-en="In-branch inspections when customer visits" data-ar="فحص في الفرع عند زيارة العميل"></span></li>
+          <li><div class="dot" style="background:var(--green);"></div><span data-en="Generate detailed inspection reports" data-ar="إنشاء تقارير فحص مفصلة"></span></li>
+          <li><div class="dot" style="background:var(--green);"></div><span data-en="Flag good deals for used car team" data-ar="إبلاغ فريق السيارات المستعملة بالصفقات الجيدة"></span></li>
+        </ul>
+      </div>
+
+      <div class="team-card equipment">
+        <h3>&#9881; <span data-en="Equipment per Branch" data-ar="المعدات لكل فرع"></span></h3>
+        <ul>
+          <li><div class="dot" style="background:var(--purple);"></div><span data-en="1 Tablet — for staff car browsing & quick lookups" data-ar="جهاز لوحي ١ — لتصفح السيارات والبحث السريع للموظفين"></span></li>
+          <li><div class="dot" style="background:var(--purple);"></div><span data-en="1 Interactive Screen — customer-facing car catalog" data-ar="شاشة تفاعلية ١ — كتالوج سيارات للعملاء"></span></li>
+          <li><div class="dot" style="background:var(--purple);"></div><span data-en="1 Inspector — dedicated to that branch" data-ar="فاحص ١ — مخصص لهذا الفرع"></span></li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 class="flow-title" style="margin-top:2rem;" data-en="Branch Overview" data-ar="نظرة عامة على الفروع"></h2>
+    <p class="flow-subtitle" data-en="4 Ellithy branches, each equipped with digital tools and a dedicated inspector. 2 inspection cars rotate across all branches."
+       data-ar="٤ فروع لليثي، كل فرع مجهز بأدوات رقمية وفاحص مخصص. سيارتا فحص تتنقلان بين جميع الفروع."></p>
+
+    <div class="branch-visual">
+      <div class="branch-card">
+        <div class="branch-icon">&#127970;</div>
+        <h4 data-en="Branch 1" data-ar="الفرع ١"></h4>
+        <div class="branch-items">
+          <span data-en="1 Inspector" data-ar="١ فاحص"></span>
+          <span data-en="1 Tablet" data-ar="١ جهاز لوحي"></span>
+          <span data-en="1 Interactive Screen" data-ar="١ شاشة تفاعلية"></span>
+        </div>
+      </div>
+      <div class="branch-card">
+        <div class="branch-icon">&#127970;</div>
+        <h4 data-en="Branch 2" data-ar="الفرع ٢"></h4>
+        <div class="branch-items">
+          <span data-en="1 Inspector" data-ar="١ فاحص"></span>
+          <span data-en="1 Tablet" data-ar="١ جهاز لوحي"></span>
+          <span data-en="1 Interactive Screen" data-ar="١ شاشة تفاعلية"></span>
+        </div>
+      </div>
+      <div class="branch-card">
+        <div class="branch-icon">&#127970;</div>
+        <h4 data-en="Branch 3" data-ar="الفرع ٣"></h4>
+        <div class="branch-items">
+          <span data-en="1 Inspector" data-ar="١ فاحص"></span>
+          <span data-en="1 Tablet" data-ar="١ جهاز لوحي"></span>
+          <span data-en="1 Interactive Screen" data-ar="١ شاشة تفاعلية"></span>
+        </div>
+      </div>
+      <div class="branch-card">
+        <div class="branch-icon">&#127970;</div>
+        <h4 data-en="Branch 4" data-ar="الفرع ٤"></h4>
+        <div class="branch-items">
+          <span data-en="1 Inspector" data-ar="١ فاحص"></span>
+          <span data-en="1 Tablet" data-ar="١ جهاز لوحي"></span>
+          <span data-en="1 Interactive Screen" data-ar="١ شاشة تفاعلية"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="parallel-section" style="border-color:var(--green); margin-top: 1.5rem;">
+      <h3 style="color:var(--green);">&#128663; <span data-en="Inspection Cars (2 Total — Rotating)" data-ar="سيارات الفحص (٢ إجمالاً — متنقلة)"></span></h3>
+      <p style="font-size:0.85rem; color:var(--muted); line-height:1.6;"
+         data-en="2 fully-equipped inspection cars rotate across all 4 branches based on the next scheduled home visit. They are not fixed to any branch — dispatched dynamically by the central ops team."
+         data-ar="سيارتا فحص مجهزتان بالكامل تتنقلان بين الفروع الـ ٤ حسب الزيارة المنزلية التالية المجدولة. غير مخصصتين لأي فرع — يتم توجيههما ديناميكياً من فريق العمليات المركزي."></p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let currentLang = 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+  const isAr = lang === 'ar';
+  document.body.classList.toggle('rtl', isAr);
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isAr ? 'rtl' : 'ltr';
+
+  // Update toggle buttons
+  document.querySelectorAll('.lang-toggle button').forEach(btn => {
+    btn.classList.toggle('active', (isAr && btn.textContent.includes('عربي')) || (!isAr && btn.textContent.includes('EN')));
+  });
+
+  // Update all translatable elements
+  document.querySelectorAll('[data-en]').forEach(el => {
+    const text = el.getAttribute(`data-${lang}`);
+    if (text) el.textContent = text;
+  });
+}
+
+function switchTab(tabId) {
+  // Update tabs
+  document.querySelectorAll('.tabs button').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tabId);
+  });
+  // Update sections
+  document.querySelectorAll('.section').forEach(sec => {
+    sec.classList.toggle('active', sec.id === `sec-${tabId}`);
+  });
+  // Re-trigger animations
+  const activeSec = document.getElementById(`sec-${tabId}`);
+  if (activeSec) {
+    activeSec.querySelectorAll('.flow-step').forEach(step => {
+      step.style.animation = 'none';
+      step.offsetHeight; // force reflow
+      step.style.animation = '';
+    });
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Tab click handlers
+document.querySelectorAll('.tabs button').forEach(btn => {
+  btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+});
+
+// Initialize text
+setLang('en');
+</script>
+
+</body>
+</html>
